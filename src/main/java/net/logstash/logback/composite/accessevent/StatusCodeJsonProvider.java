@@ -18,12 +18,12 @@ import java.io.IOException;
 import com.fasterxml.jackson.core.JsonGenerator;
 
 import ch.qos.logback.access.spi.IAccessEvent;
-import net.logstash.logback.composite.AbstractFieldJsonProvider;
-import net.logstash.logback.composite.FieldNamesAware;
-import net.logstash.logback.composite.JsonWritingUtils;
+import com.fasterxml.jackson.module.jsonSchema.types.IntegerSchema;
+import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema;
+import net.logstash.logback.composite.*;
 import net.logstash.logback.fieldnames.LogstashAccessFieldNames;
 
-public class StatusCodeJsonProvider extends AbstractFieldJsonProvider<IAccessEvent> implements FieldNamesAware<LogstashAccessFieldNames> {
+public class StatusCodeJsonProvider extends AbstractSchemaAwareFieldJsonProvider<IAccessEvent> implements FieldNamesAware<LogstashAccessFieldNames> {
 
     public static final String FIELD_STATUS_CODE = "@fields.status_code";
     
@@ -41,4 +41,8 @@ public class StatusCodeJsonProvider extends AbstractFieldJsonProvider<IAccessEve
         setFieldName(fieldNames.getFieldsStatusCode());
     }
 
+    @Override
+    public void addToSchema(ObjectSchema topLevelSchema) {
+        topLevelSchema.putOptionalProperty(getFieldName(), new IntegerSchema());
+    }
 }

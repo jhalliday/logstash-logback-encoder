@@ -18,12 +18,12 @@ import java.io.IOException;
 import com.fasterxml.jackson.core.JsonGenerator;
 
 import ch.qos.logback.access.spi.IAccessEvent;
-import net.logstash.logback.composite.AbstractFieldJsonProvider;
-import net.logstash.logback.composite.FieldNamesAware;
-import net.logstash.logback.composite.JsonWritingUtils;
+import com.fasterxml.jackson.module.jsonSchema.types.IntegerSchema;
+import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema;
+import net.logstash.logback.composite.*;
 import net.logstash.logback.fieldnames.LogstashAccessFieldNames;
 
-public class ContentLengthJsonProvider extends AbstractFieldJsonProvider<IAccessEvent> implements FieldNamesAware<LogstashAccessFieldNames> {
+public class ContentLengthJsonProvider extends AbstractSchemaAwareFieldJsonProvider<IAccessEvent> implements FieldNamesAware<LogstashAccessFieldNames> {
 
     public static final String FIELD_CONTENT_LENGTH = "@fields.content_length";
     
@@ -41,4 +41,8 @@ public class ContentLengthJsonProvider extends AbstractFieldJsonProvider<IAccess
         setFieldName(fieldNames.getFieldsContentLength());
     }
 
+    @Override
+    public void addToSchema(ObjectSchema topLevelSchema) {
+        JsonWritingUtils.addToSchema(topLevelSchema, getFieldName(), new IntegerSchema());
+    }
 }

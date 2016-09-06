@@ -16,8 +16,9 @@ package net.logstash.logback.composite.loggingevent;
 import java.io.IOException;
 import java.util.Iterator;
 
-import net.logstash.logback.composite.AbstractFieldJsonProvider;
-import net.logstash.logback.composite.FieldNamesAware;
+import com.fasterxml.jackson.module.jsonSchema.types.ArraySchema;
+import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema;
+import net.logstash.logback.composite.*;
 import net.logstash.logback.fieldnames.LogstashFieldNames;
 import net.logstash.logback.marker.LogstashMarker;
 
@@ -33,7 +34,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
  * Does not write any special {@link LogstashMarker}s
  * (Those are handled by {@link LogstashMarkersJsonProvider}).
  */
-public class TagsJsonProvider extends AbstractFieldJsonProvider<ILoggingEvent> implements FieldNamesAware<LogstashFieldNames> {
+public class TagsJsonProvider extends AbstractSchemaAwareFieldJsonProvider<ILoggingEvent> implements FieldNamesAware<LogstashFieldNames> {
 
     public static final String FIELD_TAGS = "tags";
     
@@ -85,5 +86,9 @@ public class TagsJsonProvider extends AbstractFieldJsonProvider<ILoggingEvent> i
     public void setFieldNames(LogstashFieldNames fieldNames) {
         setFieldName(fieldNames.getTags());
     }
-    
+
+    @Override
+    public void addToSchema(ObjectSchema topLevelSchema) {
+        JsonWritingUtils.addToSchema(topLevelSchema, getFieldName(), new ArraySchema());
+    }
 }

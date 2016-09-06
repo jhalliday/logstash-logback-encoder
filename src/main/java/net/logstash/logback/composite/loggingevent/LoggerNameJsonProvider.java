@@ -17,9 +17,7 @@ import java.io.IOException;
 
 import net.logstash.logback.CachingAbbreviator;
 import net.logstash.logback.NullAbbreviator;
-import net.logstash.logback.composite.AbstractFieldJsonProvider;
-import net.logstash.logback.composite.FieldNamesAware;
-import net.logstash.logback.composite.JsonWritingUtils;
+import net.logstash.logback.composite.*;
 import net.logstash.logback.fieldnames.LogstashFieldNames;
 import ch.qos.logback.classic.pattern.Abbreviator;
 import ch.qos.logback.classic.pattern.TargetLengthBasedClassNameAbbreviator;
@@ -27,7 +25,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 
-public class LoggerNameJsonProvider extends AbstractFieldJsonProvider<ILoggingEvent> implements FieldNamesAware<LogstashFieldNames> {
+public class LoggerNameJsonProvider extends AbstractSchemaAwareFieldJsonProvider<ILoggingEvent> implements FieldNamesAware<LogstashFieldNames> {
 
     public static final String FIELD_LOGGER_NAME = "logger_name";
 
@@ -67,5 +65,5 @@ public class LoggerNameJsonProvider extends AbstractFieldJsonProvider<ILoggingEv
             abbreviator = NullAbbreviator.INSTANCE;
         }
     }
-    
+
 }

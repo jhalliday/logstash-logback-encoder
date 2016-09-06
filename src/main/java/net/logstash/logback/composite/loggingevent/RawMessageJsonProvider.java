@@ -15,13 +15,13 @@ package net.logstash.logback.composite.loggingevent;
 
 import java.io.IOException;
 
-import net.logstash.logback.composite.AbstractFieldJsonProvider;
+import net.logstash.logback.composite.AbstractSchemaAwareFieldJsonProvider;
 import net.logstash.logback.composite.JsonWritingUtils;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 
-public class RawMessageJsonProvider extends AbstractFieldJsonProvider<ILoggingEvent> {
+public class RawMessageJsonProvider extends AbstractSchemaAwareFieldJsonProvider<ILoggingEvent> {
 
     public static final String FIELD_RAW_MESSAGE = "raw_message";
 
@@ -33,5 +33,5 @@ public class RawMessageJsonProvider extends AbstractFieldJsonProvider<ILoggingEv
     public void writeTo(JsonGenerator generator, ILoggingEvent event) throws IOException {
         JsonWritingUtils.writeStringField(generator, getFieldName(), event.getMessage());
     }
-    
+
 }

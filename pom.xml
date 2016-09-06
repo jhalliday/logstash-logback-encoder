@@ -37,6 +37,7 @@
         <org.mockito.version>1.10.19</org.mockito.version>
         <com.lmax.disruptor.version>3.3.4</com.lmax.disruptor.version>
         <org.codehaus.mojo.animal-sniffer.version>1.15</org.codehaus.mojo.animal-sniffer.version>
+        <com.github.fge.json-schema-validator.version>2.2.6</com.github.fge.json-schema-validator.version>
     </properties>
 
     <licenses>
@@ -111,6 +112,11 @@
             <version>${com.fasterxml.jackson.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-jsonSchema</artifactId>
+            <version>${com.fasterxml.jackson.version}</version>
+        </dependency>
+        <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>${commons.lang.version}</version>
@@ -149,6 +155,12 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>${commons.io.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.fge</groupId>
+            <artifactId>json-schema-validator</artifactId>
+            <version>${com.github.fge.json-schema-validator.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

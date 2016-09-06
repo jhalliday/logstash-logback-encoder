@@ -15,6 +15,10 @@ package net.logstash.logback.composite;
 
 import java.io.IOException;
 
+import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
+import com.fasterxml.jackson.module.jsonSchema.types.IntegerSchema;
+import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema;
+import com.fasterxml.jackson.module.jsonSchema.types.StringSchema;
 import net.logstash.logback.fieldnames.LogstashCommonFieldNames;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -31,7 +35,7 @@ import ch.qos.logback.core.spi.DeferredProcessingAware;
  *
  * @param <Event> type of event ({@link ILoggingEvent} or {@link IAccessEvent}).
  */
-public class LogstashVersionJsonProvider<Event extends DeferredProcessingAware> extends AbstractFieldJsonProvider<Event> implements FieldNamesAware<LogstashCommonFieldNames> {
+public class LogstashVersionJsonProvider<Event extends DeferredProcessingAware> extends AbstractSchemaAwareFieldJsonProvider<Event> implements FieldNamesAware<LogstashCommonFieldNames> {
     
     public static final String FIELD_VERSION = "@version";
     
@@ -80,4 +84,9 @@ public class LogstashVersionJsonProvider<Event extends DeferredProcessingAware> 
         this.writeAsString = writeAsString;
     }
 
+    @Override
+    public void addToSchema(ObjectSchema topLevelSchema) {
+        JsonSchema jsonSchema = writeAsString ? new StringSchema() : new IntegerSchema();
+        JsonWritingUtils.addToSchema(topLevelSchema, getFieldName(), jsonSchema);
+    }
 }

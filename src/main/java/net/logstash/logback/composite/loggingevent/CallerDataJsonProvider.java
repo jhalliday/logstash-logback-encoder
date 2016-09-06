@@ -15,15 +15,16 @@ package net.logstash.logback.composite.loggingevent;
 
 import java.io.IOException;
 
-import net.logstash.logback.composite.AbstractFieldJsonProvider;
-import net.logstash.logback.composite.FieldNamesAware;
-import net.logstash.logback.composite.JsonWritingUtils;
+import com.fasterxml.jackson.module.jsonSchema.types.IntegerSchema;
+import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema;
+import com.fasterxml.jackson.module.jsonSchema.types.StringSchema;
+import net.logstash.logback.composite.*;
 import net.logstash.logback.fieldnames.LogstashFieldNames;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 
-public class CallerDataJsonProvider extends AbstractFieldJsonProvider<ILoggingEvent> implements FieldNamesAware<LogstashFieldNames> {
+public class CallerDataJsonProvider extends AbstractSchemaAwareFieldJsonProvider<ILoggingEvent> implements FieldNamesAware<LogstashFieldNames> {
 
     public static final String FIELD_CALLER_CLASS_NAME = "caller_class_name";
     public static final String FIELD_CALLER_METHOD_NAME = "caller_method_name";
@@ -98,5 +99,21 @@ public class CallerDataJsonProvider extends AbstractFieldJsonProvider<ILoggingEv
     }
     public void setLineFieldName(String callerLineFieldName) {
         this.lineFieldName = callerLineFieldName;
+    }
+
+    @Override
+    public void addToSchema(ObjectSchema topLevelSchema) {
+        ObjectSchema parentSchema;
+        if(getFieldName() != null) {
+            parentSchema = new ObjectSchema();
+            topLevelSchema.putOptionalProperty(getFieldName(), parentSchema);
+        } else {
+            parentSchema = topLevelSchema;
+        }
+
+        parentSchema.putOptionalProperty(getClassFieldName(), new StringSchema());
+        parentSchema.putOptionalProperty(getMethodFieldName(), new StringSchema());
+        parentSchema.putOptionalProperty(getFileFieldName(), new StringSchema());
+        parentSchema.putOptionalProperty(getLineFieldName(), new IntegerSchema());
     }
 }

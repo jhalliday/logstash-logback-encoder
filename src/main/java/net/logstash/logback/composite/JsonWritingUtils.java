@@ -16,6 +16,9 @@ package net.logstash.logback.composite;
 import java.io.IOException;
 import java.util.Map;
 
+import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
+import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema;
+import com.fasterxml.jackson.module.jsonSchema.types.StringSchema;
 import net.logstash.logback.fieldnames.LogstashCommonFieldNames;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -92,4 +95,9 @@ public class JsonWritingUtils {
         return fieldName != null && !fieldName.equals(LogstashCommonFieldNames.IGNORE_FIELD_INDICATOR);
     }
 
+    public static void addToSchema(ObjectSchema topLevelSchema, String fieldName, JsonSchema jsonSchema) {
+        if(JsonWritingUtils.shouldWriteField(fieldName)) {
+            topLevelSchema.putOptionalProperty(fieldName, jsonSchema);
+        }
+    }
 }

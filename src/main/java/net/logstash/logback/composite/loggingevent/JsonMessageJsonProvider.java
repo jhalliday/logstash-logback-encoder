@@ -15,12 +15,16 @@ package net.logstash.logback.composite.loggingevent;
 
 import java.io.IOException;
 
+import com.fasterxml.jackson.module.jsonSchema.types.ArraySchema;
+import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema;
+import net.logstash.logback.composite.AbstractSchemaAwareFieldJsonProvider;
+import net.logstash.logback.composite.JsonWritingUtils;
+
 import org.slf4j.Marker;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
-import net.logstash.logback.composite.AbstractFieldJsonProvider;
 import net.logstash.logback.marker.Markers;
 
 /**
@@ -29,7 +33,7 @@ import net.logstash.logback.marker.Markers;
  * @deprecated Use the {@link LogstashMarkersJsonProvider}, and log events with {@link Markers} instead.
  */
 @Deprecated
-public class JsonMessageJsonProvider extends AbstractFieldJsonProvider<ILoggingEvent> {
+public class JsonMessageJsonProvider extends AbstractSchemaAwareFieldJsonProvider<ILoggingEvent> {
 
     /**
      * Name of the {@link Marker} that indicates that the log event arguments should be appended to the
@@ -55,4 +59,8 @@ public class JsonMessageJsonProvider extends AbstractFieldJsonProvider<ILoggingE
         }
     }
 
+    @Override
+    public void addToSchema(ObjectSchema topLevelSchema) {
+        JsonWritingUtils.addToSchema(topLevelSchema, getFieldName(), new ArraySchema());
+    }
 }

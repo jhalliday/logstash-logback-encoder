@@ -19,12 +19,12 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 
-import net.logstash.logback.composite.AbstractFieldJsonProvider;
-import net.logstash.logback.composite.FieldNamesAware;
-import net.logstash.logback.composite.JsonWritingUtils;
+import com.fasterxml.jackson.module.jsonSchema.types.IntegerSchema;
+import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema;
+import net.logstash.logback.composite.*;
 import net.logstash.logback.fieldnames.LogstashFieldNames;
 
-public class LogLevelValueJsonProvider extends AbstractFieldJsonProvider<ILoggingEvent> implements FieldNamesAware<LogstashFieldNames> {
+public class LogLevelValueJsonProvider extends AbstractSchemaAwareFieldJsonProvider<ILoggingEvent> implements FieldNamesAware<LogstashFieldNames> {
 
     public static final String FIELD_LEVEL_VALUE = "level_value";
     
@@ -42,4 +42,8 @@ public class LogLevelValueJsonProvider extends AbstractFieldJsonProvider<ILoggin
         setFieldName(fieldNames.getLevelValue());
     }
 
+    @Override
+    public void addToSchema(ObjectSchema topLevelSchema) {
+        JsonWritingUtils.addToSchema(topLevelSchema, getFieldName(), new IntegerSchema());
+    }
 }

@@ -18,12 +18,10 @@ import java.io.IOException;
 import com.fasterxml.jackson.core.JsonGenerator;
 
 import ch.qos.logback.access.spi.IAccessEvent;
-import net.logstash.logback.composite.AbstractFieldJsonProvider;
-import net.logstash.logback.composite.FieldNamesAware;
-import net.logstash.logback.composite.JsonWritingUtils;
+import net.logstash.logback.composite.*;
 import net.logstash.logback.fieldnames.LogstashAccessFieldNames;
 
-public class RemoteUserJsonProvider extends AbstractFieldJsonProvider<IAccessEvent> implements FieldNamesAware<LogstashAccessFieldNames> {
+public class RemoteUserJsonProvider extends AbstractSchemaAwareFieldJsonProvider<IAccessEvent> implements FieldNamesAware<LogstashAccessFieldNames> {
 
     public static final String FIELD_REMOTE_USER = "@fields.remote_user";
     

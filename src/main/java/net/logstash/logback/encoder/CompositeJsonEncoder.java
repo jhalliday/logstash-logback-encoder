@@ -42,6 +42,8 @@ public abstract class CompositeJsonEncoder<Event extends DeferredProcessingAware
     private byte[] lineSeparatorBytes;
     
     private Charset charset;
+
+    private SchemaPlugin<Event> schemaPlugin;
     
     public CompositeJsonEncoder() {
         super();
@@ -56,7 +58,10 @@ public abstract class CompositeJsonEncoder<Event extends DeferredProcessingAware
         initWrapped(prefix, os);
         super.init(os);
         initWrapped(suffix, os);
-        
+
+        if(schemaPlugin != null) {
+            schemaPlugin.init(getProviders());
+        }
     }
 
     private void initWrapped(Encoder<Event> wrapped, OutputStream os) throws IOException {
@@ -246,4 +251,11 @@ public abstract class CompositeJsonEncoder<Event extends DeferredProcessingAware
         this.suffix = suffix;
     }
 
+    public SchemaPlugin<Event> getSchemaPlugin() {
+        return schemaPlugin;
+    }
+
+    public void setSchemaPlugin(SchemaPlugin<Event> schemaPlugin) {
+        this.schemaPlugin = schemaPlugin;
+    }
 }

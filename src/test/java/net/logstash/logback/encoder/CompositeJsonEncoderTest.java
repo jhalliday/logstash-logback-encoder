@@ -187,5 +187,12 @@ public class CompositeJsonEncoderTest {
         Assert.assertEquals(null, encoder.getLineSeparator());
     }
     
+    @Test
+    public void testSchemaPlugin() throws IOException {
+        SchemaPlugin<ILoggingEvent> schemaPlugin = mock(SchemaPlugin.class);
+        encoder.setSchemaPlugin(schemaPlugin);
+        encoder.init(bufferedOutputStream);
 
+        verify(schemaPlugin).init(encoder.getProviders());
+    }
 }
