@@ -16,8 +16,8 @@ package net.logstash.logback.composite.loggingevent;
 import java.io.IOException;
 import java.util.Iterator;
 
+import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.types.ArraySchema;
-import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema;
 import net.logstash.logback.composite.*;
 import net.logstash.logback.fieldnames.LogstashFieldNames;
 import net.logstash.logback.marker.LogstashMarker;
@@ -88,7 +88,7 @@ public class TagsJsonProvider extends AbstractSchemaAwareFieldJsonProvider<ILogg
     }
 
     @Override
-    public void addToSchema(ObjectSchema topLevelSchema) {
-        JsonWritingUtils.addToSchema(topLevelSchema, getFieldName(), new ArraySchema());
+    public JsonSchema getFieldSchema() {
+        return new ArraySchema();
     }
 }

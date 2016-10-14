@@ -14,6 +14,7 @@
 package net.logstash.logback.composite;
 
 import ch.qos.logback.core.spi.DeferredProcessingAware;
+import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema;
 import com.fasterxml.jackson.module.jsonSchema.types.StringSchema;
 
@@ -23,8 +24,12 @@ import com.fasterxml.jackson.module.jsonSchema.types.StringSchema;
  */
 public abstract class AbstractSchemaAwareFieldJsonProvider<Event extends DeferredProcessingAware> extends AbstractFieldJsonProvider<Event> implements StaticSchemaProvider<Event> {
 
+    public JsonSchema getFieldSchema() {
+        return new StringSchema();
+    }
+
     @Override
     public void addToSchema(ObjectSchema topLevelSchema) {
-        JsonWritingUtils.addToSchema(topLevelSchema, getFieldName(), new StringSchema());
+        JsonWritingUtils.addToSchema(topLevelSchema, getFieldName(), getFieldSchema());
     }
 }

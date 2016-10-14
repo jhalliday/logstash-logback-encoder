@@ -16,6 +16,8 @@ package net.logstash.logback.encoder;
 import ch.qos.logback.core.spi.DeferredProcessingAware;
 import net.logstash.logback.composite.JsonProviders;
 
+import java.io.IOException;
+
 /**
  * Extension API to allow customized handling of schema information at runtime.
  */
@@ -24,5 +26,5 @@ public interface SchemaPlugin<Event extends DeferredProcessingAware> {
     /**
      * Called by the Encoder after its own initialization, to allow the plugin to perform startup tasks.
      */
-    void init(JsonProviders<Event> jsonProviders);
+    void init(JsonProviders<Event> jsonProviders) throws IOException;
 }

@@ -115,6 +115,7 @@
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-jsonSchema</artifactId>
             <version>${com.fasterxml.jackson.version}</version>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>commons-lang</groupId>
@@ -162,6 +163,7 @@
             <artifactId>json-schema-validator</artifactId>
             <version>${com.github.fge.json-schema-validator.version}</version>
             <scope>test</scope>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 

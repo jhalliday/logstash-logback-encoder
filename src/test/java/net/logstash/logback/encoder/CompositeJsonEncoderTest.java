@@ -22,6 +22,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
+import net.logstash.logback.LogstashFormatter;
 import net.logstash.logback.composite.CompositeJsonFormatter;
 
 import org.junit.Assert;
@@ -189,10 +190,13 @@ public class CompositeJsonEncoderTest {
     
     @Test
     public void testSchemaPlugin() throws IOException {
-        SchemaPlugin<ILoggingEvent> schemaPlugin = mock(SchemaPlugin.class);
-        encoder.setSchemaPlugin(schemaPlugin);
-        encoder.init(bufferedOutputStream);
 
-        verify(schemaPlugin).init(encoder.getProviders());
+        SchemaPlugin<ILoggingEvent> schemaPlugin = mock(SchemaPlugin.class);
+        CompositeJsonFormatter formatter = new LogstashFormatter(null);
+
+        formatter.setSchemaPlugin(schemaPlugin);
+        formatter.start();
+
+        verify(schemaPlugin).init(formatter.getProviders());
     }
 }

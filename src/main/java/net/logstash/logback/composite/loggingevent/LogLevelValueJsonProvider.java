@@ -19,8 +19,8 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 
+import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.types.IntegerSchema;
-import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema;
 import net.logstash.logback.composite.*;
 import net.logstash.logback.fieldnames.LogstashFieldNames;
 
@@ -43,7 +43,7 @@ public class LogLevelValueJsonProvider extends AbstractSchemaAwareFieldJsonProvi
     }
 
     @Override
-    public void addToSchema(ObjectSchema topLevelSchema) {
-        JsonWritingUtils.addToSchema(topLevelSchema, getFieldName(), new IntegerSchema());
+    public JsonSchema getFieldSchema() {
+        return new IntegerSchema();
     }
 }

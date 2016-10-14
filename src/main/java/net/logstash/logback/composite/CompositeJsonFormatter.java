@@ -36,6 +36,7 @@ import com.fasterxml.jackson.core.io.SegmentedStringWriter;
 import com.fasterxml.jackson.core.util.BufferRecycler;
 import com.fasterxml.jackson.core.util.ByteArrayBuilder;
 import com.fasterxml.jackson.databind.MappingJsonFactory;
+import net.logstash.logback.encoder.SchemaPlugin;
 
 /**
  * Formats logstash Events as JSON using {@link JsonProvider}s.
@@ -101,6 +102,8 @@ public abstract class CompositeJsonFormatter<Event extends DeferredProcessingAwa
     private JsonEncoding encoding = JsonEncoding.UTF8;
     
     private volatile boolean started;
+
+    private SchemaPlugin<Event> schemaPlugin;
     
     public CompositeJsonFormatter(ContextAware declaredOrigin) {
         super(declaredOrigin);
@@ -115,6 +118,15 @@ public abstract class CompositeJsonFormatter<Event extends DeferredProcessingAwa
         jsonProviders.setJsonFactory(jsonFactory);
         jsonProviders.setContext(context);
         jsonProviders.start();
+
+        if(schemaPlugin != null) {
+            try {
+                schemaPlugin.init(jsonProviders);
+            }catch(IOException e) {
+                addError("Can't init schema validation", e);
+            }
+        }
+
         started = true;
     }
     
@@ -235,5 +247,12 @@ public abstract class CompositeJsonFormatter<Event extends DeferredProcessingAwa
     public void setProviders(JsonProviders<Event> jsonProviders) {
         this.jsonProviders = jsonProviders;
     }
-    
+
+    public SchemaPlugin<Event> getSchemaPlugin() {
+        return schemaPlugin;
+    }
+
+    public void setSchemaPlugin(SchemaPlugin<Event> schemaPlugin) {
+        this.schemaPlugin = schemaPlugin;
+    }
 }

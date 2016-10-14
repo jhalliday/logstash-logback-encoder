@@ -18,8 +18,8 @@ import java.io.IOException;
 import com.fasterxml.jackson.core.JsonGenerator;
 
 import ch.qos.logback.access.spi.IAccessEvent;
+import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.types.IntegerSchema;
-import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema;
 import net.logstash.logback.composite.*;
 import net.logstash.logback.fieldnames.LogstashAccessFieldNames;
 
@@ -42,7 +42,7 @@ public class ContentLengthJsonProvider extends AbstractSchemaAwareFieldJsonProvi
     }
 
     @Override
-    public void addToSchema(ObjectSchema topLevelSchema) {
-        JsonWritingUtils.addToSchema(topLevelSchema, getFieldName(), new IntegerSchema());
+    public JsonSchema getFieldSchema() {
+        return new IntegerSchema();
     }
 }

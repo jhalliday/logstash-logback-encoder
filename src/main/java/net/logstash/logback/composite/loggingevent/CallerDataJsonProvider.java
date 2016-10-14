@@ -24,7 +24,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 
-public class CallerDataJsonProvider extends AbstractSchemaAwareFieldJsonProvider<ILoggingEvent> implements FieldNamesAware<LogstashFieldNames> {
+public class CallerDataJsonProvider extends AbstractFieldJsonProvider<ILoggingEvent> implements FieldNamesAware<LogstashFieldNames>, StaticSchemaProvider<ILoggingEvent> {
 
     public static final String FIELD_CALLER_CLASS_NAME = "caller_class_name";
     public static final String FIELD_CALLER_METHOD_NAME = "caller_method_name";

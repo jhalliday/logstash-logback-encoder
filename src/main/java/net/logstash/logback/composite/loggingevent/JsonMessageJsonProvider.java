@@ -15,10 +15,9 @@ package net.logstash.logback.composite.loggingevent;
 
 import java.io.IOException;
 
+import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.types.ArraySchema;
-import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema;
 import net.logstash.logback.composite.AbstractSchemaAwareFieldJsonProvider;
-import net.logstash.logback.composite.JsonWritingUtils;
 
 import org.slf4j.Marker;
 
@@ -60,7 +59,7 @@ public class JsonMessageJsonProvider extends AbstractSchemaAwareFieldJsonProvide
     }
 
     @Override
-    public void addToSchema(ObjectSchema topLevelSchema) {
-        JsonWritingUtils.addToSchema(topLevelSchema, getFieldName(), new ArraySchema());
+    public JsonSchema getFieldSchema() {
+        return new ArraySchema();
     }
 }

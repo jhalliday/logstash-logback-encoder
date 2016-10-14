@@ -52,7 +52,7 @@ public class ValidatingSchemaPlugin<Event extends DeferredProcessingAware> imple
     }
 
     @Override
-    public void init(JsonProviders<Event> jsonProviders) {
+    public void init(JsonProviders<Event> jsonProviders) throws IOException {
 
         final ObjectSchema topLevelSchema = new ObjectSchema();
         topLevelSchema.rejectAdditionalProperties();
@@ -67,17 +67,11 @@ public class ValidatingSchemaPlugin<Event extends DeferredProcessingAware> imple
             staticSchemaProvider.addToSchema(topLevelSchema);
         }
 
-        try {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectSchema readSchema = objectMapper.readValue(new File(validationFile), ObjectSchema.class);
 
-            ObjectMapper objectMapper = new ObjectMapper();
-            ObjectSchema readSchema = objectMapper.readValue(new File(validationFile), ObjectSchema.class);
-
-            if(!topLevelSchema.equals(readSchema)) {
-                throw new IllegalStateException("runtime configured schema does not match provided validation schema from "+validationFile);
-            }
-
-        } catch(IOException e) {
-            e.printStackTrace();
+        if(!topLevelSchema.equals(readSchema)) {
+            throw new IllegalStateException("runtime configured schema does not match provided validation schema from "+validationFile);
         }
     }
 }
